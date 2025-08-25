@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useDispatch,useSelector } from "react-redux";
 import { fetchTrending, fetchSearch } from "../slices/moviesSlice";
 import MovieCard from "../components/MovieCard";
 import Pagination from "../components/Pagination";
@@ -7,8 +7,8 @@ import Skeleton from "../components/Skeleton";
 import Navbar from "../components/Navbar";
 
 export default function Home() {
-  const d = useAppDispatch();
-  const { list, q, status } = useAppSelector((s) => s.movies);
+  const d = useDispatch();
+  const { list, q, status } = useSelector((s) => s.movies);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
