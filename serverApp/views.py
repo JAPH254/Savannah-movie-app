@@ -4,7 +4,7 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.views.decorators.http import require_GET
 from django.views.decorators.cache import cache_page
 
-API_KEY = os.getenv("TMDB_API_KEY")
+API_KEY = "0ffc2bc185ef370f2648715ff28a4f98"
 BASE_URL = "https://api.themoviedb.org/3"
 
 def _fetch(endpoint: str, params: dict = None):
