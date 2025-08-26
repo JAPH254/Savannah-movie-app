@@ -17,7 +17,6 @@ const initialState: MoviesState = {
   status: "idle",
 };
 
-// Async thunks
 export const fetchTrending = createAsyncThunk("movies/fetchTrending", async (page: number = 1) => {
   return await getTrending(page);
 });
@@ -47,7 +46,6 @@ const moviesSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // Trending
       .addCase(fetchTrending.pending, (s) => {
         s.status = "loading";
       })
@@ -60,7 +58,6 @@ const moviesSlice = createSlice({
         s.error = a.error.message;
       })
 
-      // Search
       .addCase(fetchSearch.pending, (s) => {
         s.status = "loading";
       })
@@ -73,7 +70,6 @@ const moviesSlice = createSlice({
         s.error = a.error.message;
       })
 
-      // Details
       .addCase(fetchDetails.pending, (s) => {
         s.status = "loading";
       })
