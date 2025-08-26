@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
-import { fetchTrending, fetchSearch } from "../slices/moviesSlice";
+import { fetchTrending, fetchSearch } from "../slices/MovieSlice";
 import MovieCard from "../components/MovieCard";
 import Pagination from "../components/Pagination";
 import Skeleton from "../components/Skeleton";
