@@ -1,9 +1,9 @@
-import { useAppDispatch, useAppSelector } from "../pages/hooks";
-import { setQuery } from "../slices/moviesSlice";
+import { useDispatch,useSelector } from "react-redux";
+import { setQuery } from "../slices/MovieSlice";
 
 export default function Navbar() {
-  const d = useAppDispatch();
-  const q = useAppSelector((s) => s.movies.q);
+  const d = useDispatch();
+  const q = useSelector((s) => s.movies.q);
 
   return (
     <header className="sticky top-0 bg-white shadow z-10">
