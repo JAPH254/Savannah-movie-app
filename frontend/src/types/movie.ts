@@ -12,6 +12,7 @@ export type Movie = {
   genre_ids: number[];
   original_language: string;
   media_type: string;
+  [key: string]: any;
 };
 
 export type MoviePage = {
@@ -19,4 +20,5 @@ export type MoviePage = {
   results: Movie[];
   total_pages: number;
   total_results: number;
+  [key: string]: any;
 };
