@@ -1,10 +1,26 @@
-import { ReactElement } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { selectAuth } from "../slices/authSlice";
+import { AppDispatch } from "../store";
+import { selectAuth, getUser, refreshToken } from "../slices/authSlice";
+import { ReactNode } from "react";
 
-export default function ProtectedRoute({ children }: { children: ReactElement }) {
-  const { token } = useSelector(selectAuth);
+export default function ProtectedRoute({ children }: { children: ReactNode }) {
+  const { token, user } = useSelector(selectAuth);
+  const dispatch = useDispatch<AppDispatch>();
 
-  return token ? children : <Navigate to="/login" replace />;
+  useEffect(() => {
+    if (token && !user) {
+      dispatch(getUser()); 
+    }
+  }, [token, user, dispatch]);
+
+  useEffect(() => {
+    if (!token) {
+      dispatch(refreshToken()); 
+    }
+  }, [token, dispatch]);
+
+  if (!token) return <Navigate to="/login" />;
+  return children;
 }
