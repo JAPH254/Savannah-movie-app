@@ -1,13 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, selectAuth } from "../slices/authSlice";
 import { AppDispatch } from "../store";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-  const { status, error } = useSelector(selectAuth);
+  const { status, error, token } = useSelector(selectAuth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (status === "succeeded" && token) {
+      navigate("/");
+    }
+  }, [status, token, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
