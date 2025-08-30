@@ -5,12 +5,12 @@ import MovieCard from "../components/MovieCard";
 import Pagination from "../components/Pagination";
 import Skeleton from "../components/Skeleton";
 import Navbar from "../components/Navbar";
-import { RootState, AppDispatch } from "../store"; // ✅ import types
+import { RootState, AppDispatch } from "../store"; 
 import { Movie } from "../types/movie";
 
 export default function Home() {
-  const d = useDispatch<AppDispatch>(); // ✅ typed dispatch
-  const { list, q, status } = useSelector((s: RootState) => s.movies); // ✅ typed state
+  const d = useDispatch<AppDispatch>();
+  const { list, q, status } = useSelector((s: RootState) => s.movies);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
@@ -36,7 +36,7 @@ export default function Home() {
         {list && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-24">
-              {list.results.map((m: Movie) => ( // ✅ typed Movie
+              {list.results.map((m: Movie) => ( 
                 <MovieCard key={m.id} m={m} />
               ))}
             </div>
@@ -51,3 +51,4 @@ export default function Home() {
     </>
   );
 }
+
