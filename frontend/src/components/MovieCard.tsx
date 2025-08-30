@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { Movie } from "../types/movie";
+import { useState } from "react";
 
 export default function MovieCard({ m }: { m: Movie }) {
+  const [imgLoaded, setImgLoaded] = useState(false);
+
   const img = m.poster_path
     ? `https://image.tmdb.org/t/p/w342${m.poster_path}`
     : "";
@@ -12,7 +15,21 @@ export default function MovieCard({ m }: { m: Movie }) {
       className="block rounded-2xl shadow-md hover:shadow-xl bg-white overflow-hidden transition"
     >
       {img ? (
-        <img src={img} alt={m.title} className="w-full object-cover" />
+        <div className="relative w-full h-72 bg-gray-200">
+          {!imgLoaded && (
+            <div className="absolute inset-0 flex items-center justify-center animate-pulse bg-gray-200">
+              <span className="text-gray-400 text-sm">Loading...</span>
+            </div>
+          )}
+          <img
+            src={img}
+            alt={m.title}
+            onLoad={() => setImgLoaded(true)}
+            className={`w-full h-72 object-cover transition-opacity duration-500 ${
+              imgLoaded ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        </div>
       ) : (
         <div className="h-72 bg-gray-200 flex items-center justify-center text-gray-400">
           No Image
@@ -28,7 +45,9 @@ export default function MovieCard({ m }: { m: Movie }) {
             Average {m.vote_average.toFixed(1)} with ({m.vote_count}) votes
           </span>
         </div>
-        <p className="text-gray-600 text-sm line-clamp-2 mt-2"> <b>Summary</b> {m.overview}</p>
+        <p className="text-gray-600 text-sm line-clamp-2 mt-2">
+          <b>Summary</b> {m.overview}
+        </p>
       </div>
     </Link>
   );
