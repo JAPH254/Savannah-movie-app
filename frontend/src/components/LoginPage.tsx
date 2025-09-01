@@ -49,6 +49,10 @@ export default function LoginPage() {
         </button>
       </form>
       {error && <p className="mt-2 text-red-500">{error}</p>}
+      <p className="mt-4 text-center">
+        Don't have an account? <a href="/register" className="text-blue-600">Register</a>
+      </p>
+      
     </div>
   );
 }
