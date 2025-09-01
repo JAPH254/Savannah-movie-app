@@ -22,6 +22,14 @@ const initialState: AuthState = {
   error: null,
 };
 
+interface RegisterPayload {
+  username: string;
+  email: string;
+  password: string;
+  first_name: string;
+  last_name: string;
+}
+
 
 export const loginUser = createAsyncThunk<
   { access: string; refresh: string },
@@ -45,7 +53,7 @@ export const loginUser = createAsyncThunk<
 
 export const registerUser = createAsyncThunk<
   any,
-  { email: string; password: string; username: string },
+  RegisterPayload,
   { rejectValue: string }
 >("auth/register", async (payload, thunkAPI) => {
   try {
