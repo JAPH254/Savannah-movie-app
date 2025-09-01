@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import Register from "../components/Register";
+import RegisterPage from "../components/RegisterPage";
 import { store } from "../store";
 
 // Mock navigate
@@ -19,7 +19,7 @@ describe("Register component", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <Register />
+          <RegisterPage />
         </MemoryRouter>
       </Provider>
     );
@@ -36,7 +36,7 @@ describe("Register component", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <Register />
+          <RegisterPage />
         </MemoryRouter>
       </Provider>
     );

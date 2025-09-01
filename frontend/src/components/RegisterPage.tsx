@@ -5,7 +5,7 @@ import { AppDispatch, RootState } from "../store";
 import { registerUser } from "../slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Register() {
+export default function RegisterPage() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { status, error } = useSelector((state: RootState) => state.auth);
