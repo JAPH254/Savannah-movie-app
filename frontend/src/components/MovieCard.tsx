@@ -17,15 +17,21 @@ export default function MovieCard({ m }: { m: Movie }) {
       {img ? (
         <div className="relative w-full h-72 bg-gray-200">
           {!imgLoaded && (
-            <div className="absolute inset-0 flex items-center justify-center animate-pulse bg-gray-200">
-              <span className="text-gray-400 text-sm">Loading...</span>
+            <div className="absolute inset-0 flex items-center justify-center">
+              {/* Skeleton background */}
+              <div className="absolute inset-0 animate-pulse bg-gray-300" />
+
+              {/* Spinner */}
+              <div className="relative">
+                <div className="w-10 h-10 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+              </div>
             </div>
           )}
           <img
             src={img}
             alt={m.title}
             onLoad={() => setImgLoaded(true)}
-            className={`w-full h-72 object-cover transition-opacity duration-500 ${
+            className={`w-full h-72 object-cover transition-opacity duration-700 ${
               imgLoaded ? "opacity-100" : "opacity-0"
             }`}
           />
