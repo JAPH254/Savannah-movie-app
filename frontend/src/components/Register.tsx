@@ -45,7 +45,11 @@ export default function Register() {
       })
     );
 
- 
+    if (typeof result.payload === "object" && result.payload !== null) {
+      setFieldErrors(result.payload as Record<string, string[]>);
+    } else {
+      setFieldErrors({ general: ["Something went wrong."] });
+    }
 
     if (registerUser.fulfilled.match(result)) {
       navigate("/login");
