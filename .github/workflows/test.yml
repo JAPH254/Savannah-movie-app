@@ -1,15 +1,14 @@
-name: Run Tests
+name: Run Frontend Tests
 
 on:
   push:
-    branches: [main]
+    branches: [ "staging", "main" ]
   pull_request:
-    branches: [main]
+    branches: [ "staging", "main" ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -20,7 +19,11 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd frontend
+          npm install
 
       - name: Run tests
-        run: npm test -- --watch=false
+        run: |
+          cd frontend
+          npm test
