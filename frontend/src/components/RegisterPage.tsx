@@ -1,166 +1,69 @@
+// src/pages/RegisterPage.tsx
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
 import { registerUser } from "../slices/authSlice";
-import { Link, useNavigate } from "react-router-dom";
 
 export default function RegisterPage() {
   const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { status, error } = useSelector((state: RootState) => state.auth);
+  const { error } = useSelector((state: RootState) => state.auth);
 
-  const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
-    username: "",
+  const [form, setForm] = useState({
     email: "",
+    username: "",
     password: "",
     confirmPassword: "",
   });
 
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+  const [localError, setLocalError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFieldErrors({});
-
-    if (formData.password !== formData.confirmPassword) {
-      setFieldErrors({ confirmPassword: ["Passwords do not match"] });
+    if (form.password !== form.confirmPassword) {
+      setLocalError("Passwords do not match");
       return;
     }
-
-    const result = await dispatch(
-      registerUser({
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        username: formData.username,
-        email: formData.email,
-        password: formData.password,
-      })
-    );
-
-    if (typeof result.payload === "object" && result.payload !== null) {
-      setFieldErrors(result.payload as Record<string, string[]>);
-    } else {
-      setFieldErrors({ general: ["Something went wrong."] });
-    }
-
-    if (registerUser.fulfilled.match(result)) {
-      navigate("/login");
-    }
+    setLocalError("");
+    dispatch(registerUser(form));
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
-      <div className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-xl">
-        <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
-          Create an Account ✨
-        </h2>
+    <form onSubmit={handleSubmit}>
+      <input
+        placeholder="Email"
+        name="email"
+        value={form.email}
+        onChange={handleChange}
+      />
+      <input
+        placeholder="Username"
+        name="username"
+        value={form.username}
+        onChange={handleChange}
+      />
+      <input
+        placeholder="Password"
+        type="password"
+        name="password"
+        value={form.password}
+        onChange={handleChange}
+      />
+      <input
+        placeholder="Confirm Password"
+        type="password"
+        name="confirmPassword"
+        value={form.confirmPassword}
+        onChange={handleChange}
+      />
+      <button type="submit">Register</button>
 
-        {/* General error */}
-        {error && typeof error === "string" && (
-          <div className="mb-4 rounded-lg bg-red-100 px-4 py-2 text-center text-red-700">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          {["first_name", "last_name", "username", "email"].map((field) => (
-            <div key={field}>
-              <label className="mb-1 block text-sm font-medium text-gray-700 capitalize">
-                {field.replace("_", " ")}
-              </label>
-              <input
-                type={field === "email" ? "email" : "text"}
-                name={field}
-                value={formData[field as keyof typeof formData]}
-                onChange={handleChange}
-                required
-                className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
-                  fieldErrors[field]
-                    ? "border-red-500 focus:ring-red-500"
-                    : "focus:ring-indigo-500"
-                }`}
-              />
-              {fieldErrors[field] && (
-                <p className="mt-1 text-sm text-red-600">
-                  {fieldErrors[field].join(", ")}
-                </p>
-              )}
-            </div>
-          ))}
-
-          {/* Password */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-              className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
-                fieldErrors["password"]
-                  ? "border-red-500 focus:ring-red-500"
-                  : "focus:ring-indigo-500"
-              }`}
-            />
-            {fieldErrors["password"] && (
-              <p className="mt-1 text-sm text-red-600">
-                {fieldErrors["password"].join(", ")}
-              </p>
-            )}
-          </div>
-
-          {/* Confirm Password */}
-          <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              required
-              className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
-                fieldErrors["confirmPassword"]
-                  ? "border-red-500 focus:ring-red-500"
-                  : "focus:ring-indigo-500"
-              }`}
-            />
-            {fieldErrors["confirmPassword"] && (
-              <p className="mt-1 text-sm text-red-600">
-                {fieldErrors["confirmPassword"].join(", ")}
-              </p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            disabled={status === "loading"}
-            className="w-full rounded-lg bg-indigo-600 py-2 text-white font-medium shadow hover:bg-indigo-700 transition disabled:bg-indigo-400"
-          >
-            {status === "loading" ? "Registering..." : "Register"}
-          </button>
-        </form>
-
-        <p className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="font-medium text-indigo-600 hover:text-indigo-800"
-          >
-            Login
-          </Link>
-        </p>
-      </div>
-    </div>
+      {localError && <p role="alert">{localError}</p>}
+      {error?.email && <p role="alert">{error.email}</p>}
+      {error?.username && <p role="alert">{error.username}</p>}
+    </form>
   );
 }
