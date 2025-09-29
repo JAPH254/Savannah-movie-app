@@ -10,7 +10,6 @@ export default function MovieDetailsModal() {
   const dispatch = useDispatch<AppDispatch>();
   const { selected, status, error } = useSelector((s: RootState) => s.movies);
 
-  // Fetch details when ID changes
   useEffect(() => {
     if (id) dispatch(fetchDetails(Number(id)));
     return () => {
@@ -19,10 +18,9 @@ export default function MovieDetailsModal() {
   }, [id, dispatch]);
 
   const closeModal = () => {
-    navigate("/"); // back to homepage (could be navigate(-1) if you want history back)
+    navigate("/"); 
   };
 
-  // Loading / error states
   if (status === "loading") return <p className="p-4">Loading...</p>;
   if (status === "error") return <p className="p-4 text-red-500">{error}</p>;
   if (!selected) return null;
@@ -34,7 +32,6 @@ export default function MovieDetailsModal() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 text-gray-800">
       <div className="bg-white rounded-2xl shadow-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto relative p-6">
-        {/* Close Button */}
         <button
           onClick={closeModal}
           className="absolute top-4 right-4 text-gray-600 hover:text-black text-2xl"
