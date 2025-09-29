@@ -1,4 +1,3 @@
-// src/pages/Register.tsx
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
@@ -19,7 +18,6 @@ export default function RegisterPage() {
     confirmPassword: "",
   });
 
-  // local state to store backend field errors
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +26,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFieldErrors({}); // reset
+    setFieldErrors({});
 
     if (formData.password !== formData.confirmPassword) {
       setFieldErrors({ confirmPassword: ["Passwords do not match"] });
@@ -45,109 +43,133 @@ export default function RegisterPage() {
       })
     );
 
-    if (typeof result.payload === "object" && result.payload !== null) {
+    if (registerUser.fulfilled.match(result)) {
+      navigate("/login");
+    } else if (typeof result.payload === "object" && result.payload !== null) {
       setFieldErrors(result.payload as Record<string, string[]>);
     } else {
       setFieldErrors({ general: ["Something went wrong."] });
     }
-
-    if (registerUser.fulfilled.match(result)) {
-      navigate("/login");
-    }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
-          Create an Account
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-xl">
+        <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
+          Create an Account ✨
         </h2>
 
         {/* General error */}
-        {error && typeof error === "string" && (
-          <div className="mb-4 rounded-lg bg-red-100 px-4 py-2 text-red-700">
-            {error}
+        {(error || fieldErrors.general) && (
+          <div className="mb-4 rounded-lg bg-red-100 px-4 py-2 text-center text-red-700">
+            {error || fieldErrors.general?.[0]}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {["first_name", "last_name", "username", "email"].map((field) => (
-            <div key={field}>
-              <label className="mb-1 block text-sm font-medium text-gray-600 capitalize">
-                {field.replace("_", " ")}
-              </label>
-              <input
-                type={field === "email" ? "email" : "text"}
-                name={field}
-                value={formData[field as keyof typeof formData]}
-                onChange={handleChange}
-                required
-                className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
-                  fieldErrors[field]
-                    ? "border-red-500 focus:ring-red-500"
-                    : "focus:ring-indigo-500"
-                }`}
-              />
-              {fieldErrors[field] && (
-                <p className="mt-1 text-sm text-red-600">
-                  {fieldErrors[field].join(", ")}
-                </p>
-              )}
-            </div>
-          ))}
-
-          {/* Password */}
+        <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-600">
-              Password
+            <label htmlFor="first_name" className="mb-1 block text-sm font-medium text-gray-700 capitalize">
+              First name
             </label>
             <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
+              id="first_name"
+              name="first_name"
+              type="text"
               required
-              className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
-                fieldErrors["password"]
-                  ? "border-red-500 focus:ring-red-500"
-                  : "focus:ring-indigo-500"
-              }`}
+              value={formData.first_name}
+              onChange={handleChange}
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            {fieldErrors["password"] && (
-              <p className="mt-1 text-sm text-red-600">
-                {fieldErrors["password"].join(", ")}
-              </p>
+          </div>
+
+          <div>
+            <label htmlFor="last_name" className="mb-1 block text-sm font-medium text-gray-700 capitalize">
+              Last name
+            </label>
+            <input
+              id="last_name"
+              name="last_name"
+              type="text"
+              required
+              value={formData.last_name}
+              onChange={handleChange}
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="username" className="mb-1 block text-sm font-medium text-gray-700 capitalize">
+              Username
+            </label>
+            <input
+              id="username"
+              name="username"
+              type="text"
+              required
+              value={formData.username}
+              onChange={handleChange}
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            {fieldErrors.username && (
+              <p className="mt-1 text-sm text-red-600">{fieldErrors.username[0]}</p>
             )}
           </div>
 
-          {/* Confirm Password */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-600">
+            <label htmlFor="email" className="mb-1 block text-sm font-medium text-gray-700 capitalize">
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              required
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+            {fieldErrors.email && (
+              <p className="mt-1 text-sm text-red-600">{fieldErrors.email[0]}</p>
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="password" className="mb-1 block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              required
+              value={formData.password}
+              onChange={handleChange}
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="confirmPassword" className="mb-1 block text-sm font-medium text-gray-700">
               Confirm Password
             </label>
             <input
-              type="password"
+              id="confirmPassword"
               name="confirmPassword"
+              type="password"
+              required
               value={formData.confirmPassword}
               onChange={handleChange}
-              required
-              className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
-                fieldErrors["confirmPassword"]
-                  ? "border-red-500 focus:ring-red-500"
-                  : "focus:ring-indigo-500"
-              }`}
+              className="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
-            {fieldErrors["confirmPassword"] && (
-              <p className="mt-1 text-sm text-red-600">
-                {fieldErrors["confirmPassword"].join(", ")}
-              </p>
+            {fieldErrors.confirmPassword && (
+              <p className="mt-1 text-sm text-red-600">{fieldErrors.confirmPassword[0]}</p>
             )}
           </div>
 
           <button
             type="submit"
             disabled={status === "loading"}
-            className="w-full rounded-lg bg-indigo-600 py-2 text-white hover:bg-indigo-700 disabled:bg-indigo-400"
+            className="w-full rounded-lg bg-indigo-600 py-2 text-white font-medium shadow hover:bg-indigo-700 transition disabled:bg-indigo-400"
           >
             {status === "loading" ? "Registering..." : "Register"}
           </button>
@@ -155,10 +177,7 @@ export default function RegisterPage() {
 
         <p className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            className="font-medium text-indigo-600 hover:text-indigo-800"
-          >
+          <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-800">
             Login
           </Link>
         </p>
