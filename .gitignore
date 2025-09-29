@@ -277,3 +277,70 @@ bower_components
 psd
 thumb
 sketch
+# ========================
+# Python / Django
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+db.sqlite3
+*.db
+*.sqlite3
+.env
+*.log
+
+# Django specific
+media/
+staticfiles/
+local_settings.py
+
+# ========================
+# Virtual Environment
+# ========================
+venv/
+ENV/
+env/
+.venv/
+
+# ========================
+# Node / React
+# ========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+# Keep package-lock.json if you want deterministic builds, otherwise ignore
+
+# ========================
+# IDE / Editor
+# ========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# ========================
+# OS generated files
+# ========================
+.DS_Store
+Thumbs.db
+
+# ========================
+# Archives / Backups
+# ========================
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
