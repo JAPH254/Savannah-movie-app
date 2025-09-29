@@ -5,7 +5,7 @@ import MovieCard from "../components/MovieCard";
 import Pagination from "../components/Pagination";
 import Skeleton from "../components/Skeleton";
 import Navbar from "../components/Navbar";
-import { RootState, AppDispatch } from "../store"; 
+import { RootState, AppDispatch } from "../store";
 import { Movie } from "../types/movie";
 
 export default function Home() {
@@ -36,7 +36,7 @@ export default function Home() {
         {list && (
           <>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-24">
-              {list.results.map((m: Movie) => ( 
+              {list.results.map((m: Movie) => (
                 <MovieCard key={m.id} m={m} />
               ))}
             </div>
@@ -51,4 +51,3 @@ export default function Home() {
     </>
   );
 }
-
