@@ -1,4 +1,3 @@
-// src/pages/Register.tsx
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
@@ -19,7 +18,6 @@ export default function RegisterPage() {
     confirmPassword: "",
   });
 
-  // local state to store backend field errors
   const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +26,7 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFieldErrors({}); // reset
+    setFieldErrors({});
 
     if (formData.password !== formData.confirmPassword) {
       setFieldErrors({ confirmPassword: ["Passwords do not match"] });
@@ -57,23 +55,23 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <h2 className="mb-6 text-center text-2xl font-bold text-gray-800">
-          Create an Account
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+      <div className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-xl">
+        <h2 className="mb-6 text-center text-3xl font-bold text-gray-800">
+          Create an Account ✨
         </h2>
 
         {/* General error */}
         {error && typeof error === "string" && (
-          <div className="mb-4 rounded-lg bg-red-100 px-4 py-2 text-red-700">
+          <div className="mb-4 rounded-lg bg-red-100 px-4 py-2 text-center text-red-700">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {["first_name", "last_name", "username", "email"].map((field) => (
             <div key={field}>
-              <label className="mb-1 block text-sm font-medium text-gray-600 capitalize">
+              <label className="mb-1 block text-sm font-medium text-gray-700 capitalize">
                 {field.replace("_", " ")}
               </label>
               <input
@@ -98,7 +96,7 @@ export default function RegisterPage() {
 
           {/* Password */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-600">
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Password
             </label>
             <input
@@ -122,7 +120,7 @@ export default function RegisterPage() {
 
           {/* Confirm Password */}
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-600">
+            <label className="mb-1 block text-sm font-medium text-gray-700">
               Confirm Password
             </label>
             <input
@@ -147,7 +145,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={status === "loading"}
-            className="w-full rounded-lg bg-indigo-600 py-2 text-white hover:bg-indigo-700 disabled:bg-indigo-400"
+            className="w-full rounded-lg bg-indigo-600 py-2 text-white font-medium shadow hover:bg-indigo-700 transition disabled:bg-indigo-400"
           >
             {status === "loading" ? "Registering..." : "Register"}
           </button>
